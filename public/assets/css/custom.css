@@ -1,0 +1,56 @@
+.table-responsive{overflow: auto}
+.nk-tb-list{min-width:700px;}
+.badge-dot{font-size: 17px;}
+textarea.form-control, .dual-listbox textarea.dual-listbox__search{min-height: inherit;}
+.exam_quisten_sc{
+    padding: 10px;
+    border: solid 1px #e5e5e5;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+.cousrse_video_add{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.chanhe_password_user_select{
+    width: 100%;
+    padding: 5px ;
+    border: solid 1px #e5e5e5;
+    margin: 8px 0;
+}
+.chanhe_password_user_select:hover{background-color: #ebeef2;}
+.chanhe_password_user_select.active{background-color: #269e90;color: #fff;}
+.orderDtl_sec{
+    width: 100%;
+    height: auto;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 15px;
+    color: #242424;
+}
+.customerdetails strong{
+    width: 100%;
+    font-weight: bold;
+    color: #000;
+    font-size: 15px;
+}
+
+#edit-image-preview {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+#edit-image-preview img {
+    max-height: 50px;
+    margin-left: 10px;
+}
+
+.border-top{border-top: 1px #e5e5e5 solid;}
+.total_txt{font-size: 16px;color: #000;font-weight: 600;}
+
+.social-icons i{font-size: 30px;}
