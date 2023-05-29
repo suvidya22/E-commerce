@@ -56,12 +56,7 @@
                                         <span class="nk-menu-icon"><em class="icon ni ni-cart-fill"></em></span><span class="nk-menu-text">Order management </span>
                                     </a>
                                 </li>
-                                <li class="nk-menu-item">
-                                    <a href="" class="nk-menu-link">
-                                        <span class="nk-menu-icon"><em class="icon ni ni-cart-fill"></em></span><span class="nk-menu-text">Inovoices </span>
-                                    </a>
-                                </li>
-
+                               
                             </ul>
                         </div>
                     </div>

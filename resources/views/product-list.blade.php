@@ -161,24 +161,28 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <div class="form-group"><label class="form-label" for="phone-no">Image</label>
-                                        <div class="form-group"><input type="file" class="form-control" id="image" name="image" /></div>
-                                        <img src="" id="current-icon" alt="Current Icon" width="50" />
+                                <div class="form-group">
+                                    <label class="form-label" for="image">Upload Image</label>
+                                    <div class="input-group">
+                                        <input type="file" class="form-control" id="image" name="image" onchange="previewImage(event)" />
+                                        <div id="image-preview" class="input-group-append"></div>
                                     </div>
                                 </div>
-                                <div class="col-12">
-                                    <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                                        <li><button type="submit" id="add-product" class="btn btn-primary">Add</a></li>
-                                        <li><a href="#" data-bs-dismiss="modal" class="link link-light">Cancel</a></li>
-                                    </ul>
-                                </div>
+                            </div>
+                            </div>
+                            <div class="col-12">
+                                <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                                    <li><button type="submit" id="add-product" class="btn btn-primary">Add</a></li>
+                                    <li><a href="#" data-bs-dismiss="modal" class="link link-light">Cancel</a></li>
+                                </ul>
                             </div>
                         </div>
                     </div>
-                </form>
             </div>
+            </form>
         </div>
     </div>
+</div>
 </div>
 
 <!-- Update product modal -->
@@ -202,7 +206,7 @@
                                     </select>
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-12">
                                 <div class="form-group"><label class="form-label" for="name">Product Name</label><input type="text" class="form-control" id="edit-name" name="edit-name" placeholder="Product name" required /></div>
                             </div>
@@ -211,14 +215,14 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label" for="edit-image">Upload Icon</label>
+                                    <label class="form-label" for="edit-image">Upload Image</label>
                                     <div class="input-group">
-                                        <input type="file" class="form-control" id="edit-image" name="edit-image" onchange="previewImage(event)" />
+                                        <input type="file" class="form-control" id="edit-image" name="edit-image" onchange="previewImageEdit(event)" />
                                         <div id="edit-image-preview" class="input-group-append"></div>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="col-12">
                                 <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                                     <li><button type="submit" id="update-product" class="btn btn-primary">Update</a></li>
@@ -270,7 +274,7 @@
                             '<a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>' +
                             '<div class="dropdown-menu dropdown-menu-end">' +
                             '<ul class="link-list-opt no-bdr">' +
-                            '<li><a href="#" class="edit-btn" data-id="' + row.id + '" data-name="' + row.name + '"  data-category_id="' + row.category_id + '" data-price="' + row.price + '" ><em class="icon ni ni-pen"></em><span>Edit</span></a></li>' +
+                            '<li><a href="#" class="edit-btn" data-id="' + row.id + '" data-category_id="' + row.category_id + '" data-name="' + row.name + '" data-price="' + row.price + '" ><em class="icon ni ni-pen"></em><span>Edit</span></a></li>' +
                             '<li><a href="#" class="delete-btn" data-id="' + row.id + '"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>' +
                             '</ul>' + '</div>' + '</div>';
                     }
@@ -347,12 +351,22 @@
         }
     });
 
-    function previewImage(event) {
+    function previewImageEdit(event) {
         var input = event.target;
         var reader = new FileReader();
         reader.onload = function() {
             var imagePreview = '<img src="' + reader.result + '" alt="Image" width="50">';
             $('#edit-image-preview').html(imagePreview);
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+
+    function previewImage(event) {
+        var input = event.target;
+        var reader = new FileReader();
+        reader.onload = function() {
+            var imagePreview = '<img src="' + reader.result + '" alt="Image" width="50">';
+            $('#image-preview').html(imagePreview);
         };
         reader.readAsDataURL(input.files[0]);
     }

@@ -77,7 +77,7 @@
         <div class="nk-block-head nk-block-head-sm">
             <div class="nk-block-between">
                 <div class="nk-block-head-content">
-                    <h3 class="nk-block-title page-title">Orders </h3>
+                    <h3 class="nk-block-title page-title">Orders</h3>
                 </div>
                 @if(session()->has('message'))
                 <p>{{ session()->get('message') }}</p>
@@ -88,7 +88,7 @@
                         <div class="toggle-expand-content" data-content="more-options">
                             <ul class="nk-block-tools g-3">
                                 <li class="nk-block-tools-opt">
-                                    <a class="btn btn-primary d-none d-md-inline-flex" data-bs-toggle="modal" href="#category-add" id="add-category-btn"><em class="icon ni ni-plus"></em><span>Add New</span></a>
+                                    <a class="btn btn-primary d-none d-md-inline-flex" data-bs-toggle="modal" href="#order-add" id="add-order-btn"><em class="icon ni ni-cart"></em><span>Order Now!</span></a>
                                 </li>
                             </ul>
                         </div>
@@ -100,6 +100,7 @@
             <thead>
                 <tr>
                     <th width="10px">SN</th>
+                    <th>Order ID</th>
                     <th>Customer Name</th>
                     <th>Phone</th>
                     <th>Net Amount</th>
@@ -113,36 +114,92 @@
     </div>
 </div>
 
-<!-- Add category modal -->
-<div class="modal fade" role="dialog" id="category-add">
+<!-- Add order modal -->
+<div class="modal fade" role="dialog" id="order-add">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
             <div class="modal-body modal-body-md">
-                <h5 class="title">Create New Category</h5>
-                <div class="tab-content">
-                    <div class="tab-pane active" id="student-info">
-                        <div class="row gy-4">
+                <form action="{{ route('orders.store') }}" method="POST">
+                    @csrf
+                    <h5 class="title">New Order</h5>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="student-info">
+                            <div class="row gy-4">
+                                <div class="col-md-6">
+                                    <div class="form-group"><label class="form-label" for="display-name">Customer Name</label><input type="text" class="form-control" name="customer_name" id="customer_name" placeholder="Customer name" required='required' /></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group"><label class="form-label" for="display-name">Phone</label><input type="text" class="form-control" name="phone" id="phone" placeholder="Phone" required='required' /></div>
+                                </div>
+                                <div class="col-md-10">
+                                    <label class="form-label" for="category">Select Product</label>
+                                    <select name="product" class="form-control" id="product">
+                                        <option value="">Select</option>
+                                        @foreach($products as $id => $name)
+                                        <option value="{{ $id }}">{{ $name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
 
-                            <div class="col-md-6">
-                                <div class="form-group"><label class="form-label" for="display-name">Name</label><input type="text" class="form-control" name="display-name" id="display-name" placeholder="Category name" required='required' /></div>
+                                <div class="col-md-2">
+                                    <div class="form-group"><label class="form-label" for="display-name">Quantity</label><input type="number" class="form-control" name="quantity" id="quantity" placeholder="quantity" required='required' /></div>
+                                </div>
+                                <div class="col-12">
+                                    <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                                        <li><a href="#" id="add-order" class="btn btn-primary">Add Product</a></li>
+                                    </ul>
+                                </div>
+
                             </div>
-                            <div class="col-12">
-                                <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                                    <li><a href="#" id="add-category" class="btn btn-primary">Add</a></li>
+                            <div id="order-items-container"></div>
+                            <div class="text-right">
+                                <ul class=" flex-wrap flex-sm-nowrap gx-4 gy-2">
+                                    <li><button type="submit" class="btn btn-primary" id="save-order">Place Order</a></li>
                                     <li><a href="#" class="link link-light" data-bs-dismiss="modal">Cancel</a></li>
                                 </ul>
                             </div>
-
                         </div>
                     </div>
-                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--- invoice ---->
+<div class="modal fade" id="orderDetailsModal" tabindex="-1" role="dialog" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="orderDetailsModalLabel">Invoice</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table" border="1">
+                    <tbody>
+                        <tr>
+                            <td>Order ID:</td>
+                            <td><span id="order-id"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Customer Name:</td>
+                            <td><span id="customer-name"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Price:</td>
+                            <td><span id="price"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </div>
 
 @endsection
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.3/umd/popper.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.min.js"></script>
@@ -152,14 +209,40 @@
         var table = $('.data-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('categories.list') }}",
+            ajax: "{{ route('orders.list') }}",
             columns: [{
-                    data: 'id',
-                    name: 'id'
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
                 },
                 {
-                    data: 'name',
-                    name: 'name'
+                    data: 'order_id',
+                    name: 'order_id'
+                },
+                {
+                    data: 'customer_name',
+                    name: 'customer_name'
+                },
+                {
+                    data: 'phone',
+                    name: 'phone'
+                },
+                {
+                    data: 'price',
+                    name: 'price'
+                },
+                {
+                    data: 'created_at',
+                    name: 'created_at',
+                    render: function(data, type, row) {
+                        var date = new Date(data);
+                        var day = date.getDate();
+                        var month = date.getMonth() + 1;
+                        var year = date.getFullYear();
+                        var formattedDate = day + '-' + month + '-' + year;
+                        return formattedDate;
+                    }
                 },
                 {
                     data: 'action',
@@ -171,57 +254,92 @@
                             '<a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>' +
                             '<div class="dropdown-menu dropdown-menu-end">' +
                             '<ul class="link-list-opt no-bdr">' +
-                            '<li><a href="#" class="edit-btn" data-id="' + row.id + '" data-name="' + row.customer_name + '"  data-name="' + row.phone + '" data-amount="' + row.price + '" data-created_at="' + row.created_at + '" ><em class="icon ni ni-pen"></em><span>Edit</span></a></li>' +
+                            '<li><a href="#" class="edit-btn" data-id="' + row.id + '" data-order_id="' + row.order_id + '" data-name="' + row.customer_name + '" data-name="' + row.phone + '" data-amount="' + row.price + '" data-created_at="' + row.created_at + '"><em class="icon ni ni-pen"></em><span>Edit</span></a></li>' +
                             '<li><a href="#" class="delete-btn" data-id="' + row.id + '"><em class="icon ni ni-trash"></em><span>Delete</span></a></li>' +
-                            '</ul>' + '</div>' + '</div>';
+                            '<li><a href="#" class="invoice-btn" data-id="' + row.id + '" data-order_id="' + row.order_id + '" data-price="' + row.price + '" ><em class="icon ni ni-trash"></em><span>Invoice</span></a></li>'
+                            '</ul>' +
+                            '</div>' +
+                            '</div>';
                     }
                 },
             ]
         });
 
-    });
+        $('#add-order').click(function() {
+            var product = $('#product').val();
+            var quantity = $('#quantity').val();
+            var productName = $('#product option:selected').text();
+            if (product && quantity) {
+                var orderItemRow = `
+                    <div class="order-item-row row gy-4">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label" for="product-name-${product}">${productName}</label>
+                                <input type="hidden" name="product[]" value="${product}">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="form-label" for="quantity-${product}">Quantity</label>
+                                <input type="number" class="form-control" name="quantity[]" id="quantity-${product}" value="${quantity}" readonly>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <ul class="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                                <li><a href="#" class="remove-order-item btn btn-danger" data-product="${product}">Remove</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+                $('#order-items-container').append(orderItemRow);
 
-    $(document).ready(function() {
-        $('#add-category').click(function() {
-            var name = $('#display-name').val();
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            $.ajax({
-                url: '/categories/store',
-                type: 'POST',
-                data: {
-                    name: name
-                },
-                success: function(response) {
-                    console.log(response);
-                    $('#category-add').modal('hide');
-                    window.location.replace("{{ route('categories.list') }}");
-                }
-            });
-        });
-    });
-
-    $(document).on('click', '.delete-btn', function(event) {
-            event.preventDefault();
-            var categoryId = $(this).data('id');
-            var deleteUrl = "{{ route('categories.delete', ':id') }}".replace(':id', categoryId);
-            if (confirm('Are you sure you want to delete this category?')) {
-                $.ajax({
-                    url: deleteUrl,
-                    method: 'post',
-                    data: {
-                        "_token": "{{ csrf_token() }}"
-                    },
-                    success: function(data) {
-                        $('.data-table').DataTable().ajax.reload();
-                    },
-                    error: function(xhr) {
-                        console.log(xhr.responseText);
-                    }
-                });
+                $('#product').val('');
+                $('#quantity').val('');
             }
         });
+
+        $(document).on('click', '.remove-order-item', function() {
+            var product = $(this).data('product');
+            $(this).closest('.order-item-row').remove();
+        });
+    });
+
+    $(document).on('click', '.invoice-btn', function(event) {
+    event.preventDefault();
+    var orderId = $(this).data('order_id');
+    var customerName = $(this).data('name');
+    var phone = $(this).data('phone');
+    var price = $(this).data('price');
+    var createdAt = $(this).data('created_at');
+
+    $('#orderDetailsModal').find('.modal-body #order-id').text(orderId);
+    $('#orderDetailsModal').find('.modal-body #customer-name').text(customerName);
+    $('#orderDetailsModal').find('.modal-body #phone').text(phone);
+    $('#orderDetailsModal').find('.modal-body #price').text(price);
+    $('#orderDetailsModal').find('.modal-body #created-at').text(createdAt);
+
+    $('#orderDetailsModal').modal('show');
+});
+
+
+    $(document).on('click', '.delete-btn', function(event) {
+        event.preventDefault();
+        var orderId = $(this).data('id');
+        var deleteUrl = "{{ route('orders.delete', ':id') }}".replace(':id', orderId);
+        if (confirm('Are you sure you want to delete this Order?')) {
+            $.ajax({
+                url: deleteUrl,
+                method: 'post',
+                data: {
+                    "_token": "{{ csrf_token() }}"
+                },
+                success: function(data) {
+                    $('.data-table').DataTable().ajax.reload();
+                },
+                error: function(xhr) {
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+    });
 </script>

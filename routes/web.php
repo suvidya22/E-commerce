@@ -39,5 +39,8 @@ Route::group(['prefix' => 'products'], function () {
 
 Route::group(['prefix' => 'orders'], function () {
     Route::get('list', [OrderController::class, 'list'])->name('orders.list');
-    Route::get('history', [OrderController::class, 'history'])->name('orders.history');
+    Route::post('store', [OrderController::class, 'store'])->name('orders.store');
+    Route::get('invoice/{order}', [OrderController::class, 'invoice'])->name('orders.invoice');
+    // Route::get('orders/{order}/invoice', 'OrderController@invoice')->name('orders.invoice');
+    Route::post('delete/{id}', [OrderController::class, 'delete'])->name('orders.delete');
 });
